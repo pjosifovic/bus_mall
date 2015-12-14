@@ -1,0 +1,38 @@
+body {
+  background-repeat: no-repeat;
+}
+
+/*easier styling*/
+/*body * {
+  border: 1px solid black;
+}*/
+
+body {
+  margin: 0 auto;
+  text-align: center;
+}
+
+header {
+  margin-top: 5em;
+}
+
+header h1 {
+  font-family: "Impact", sans-serif;
+  color: #1F8A70;
+  /*green*/
+}
+
+header h2 {
+  font-family: "Roboto", sans-serif;
+  color: #FFE11A;
+  /*yellow*/
+}
+
+.container section {
+  height: 300px;
+}
+
+.container img {
+  border: 2px solid black;
+  height: 100%;
+}
