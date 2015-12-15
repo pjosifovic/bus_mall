@@ -3,9 +3,9 @@ body {
 }
 
 /*easier styling*/
-/*body * {
+body * {
   border: 1px solid black;
-}*/
+}
 
 body {
   margin: 0 auto;
@@ -28,11 +28,16 @@ header h2 {
   /*yellow*/
 }
 
-.container section {
+.container #imageDisplay {
   height: 300px;
 }
 
 .container img {
   border: 2px solid black;
   height: 100%;
+}
+
+.container #imageList {
+  margin-top: 40px;
+  text-align: left;
 }
