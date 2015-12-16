@@ -30,6 +30,7 @@ header h2 {
 
 .container #imageDisplay {
   height: 300px;
+  margin-bottom: 10px;
 }
 
 .container img {
@@ -37,7 +38,12 @@ header h2 {
   height: 100%;
 }
 
-.container #imageList {
+.container #results {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container #totals {
   margin-top: 40px;
   text-align: left;
 
