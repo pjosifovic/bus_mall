@@ -3,9 +3,9 @@ body {
 }
 
 /*easier styling*/
-body * {
+/*body * {
   border: 1px solid black;
-}
+}*/
 
 body {
   margin: 0 auto;
@@ -30,6 +30,7 @@ header h2 {
 
 .container #imageDisplay {
   height: 300px;
+  margin-bottom: 10px;
 }
 
 .container img {
@@ -37,8 +38,29 @@ header h2 {
   height: 100%;
 }
 
-.container #imageList {
+.container #results {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container #results.yellow {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #FFE11A;
+}
+
+.container #totals {
   margin-top: 40px;
   text-align: left;
+}
 
+.container #clear {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container #clear.green {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #1F8A70;
 }

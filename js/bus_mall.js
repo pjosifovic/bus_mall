@@ -1,102 +1,174 @@
-// declaring general VAR
-var allProducts = [];
-var productNames = ['bag', 'banana', 'boots', 'chair', 'cthulhu', 'dragon', 'pen', 'scissors', 'shark', 'sweep', 'unicorn', 'usb', 'water_can', 'wine_glass'];
-// var allViewed = [];
 
-//// creating Product obj constuctor
+var imageSectionEl = document.getElementById('imageDisplay');
+var myBarChartEl = document.getElementById('chartSection');
+var myBarChart;
+var clearEl = document.getElementById('clear');
+var totalEl = document.getElementById('totals');
+var barEl = document.getElementById("myChart").getContext('2d');
+var allProducts = [];
+var productNames = [
+    'bag',
+    'banana',
+    'boots',
+    'chair',
+    'cthulhu',
+    'dragon',
+    'pen',
+    'scissors',
+    'shark',
+    'sweep',
+    'unicorn',
+    'usb',
+    'water_can',
+    'wine_glass'
+];
+
+var barData = {
+    labels: [],
+    datasets: [
+        {
+            label: "My First Chart",
+            fillColor: "#1F8A70",
+            highlightFill: "#FFE11A",
+            data: []
+        }]
+};
+
+var barOptions = {
+     barShowStroke: false,
+     scaleShowGridLines: false,
+     barValueSpacing : 1,
+};
+
 function Product(name, path) {
   this.name = name;
   this.path = path;
   this.tally = 0;
-  this.views = 0;
   allProducts.push(this);
+  barData.labels.push(name);
+  // barData.datasets[0].data.push(0);
+  // barData.datasets[0].data.push(0);
 };
 
-// create 14 images with name and path properties using function buildAlbum
+
 (function buildAlbum() {
   for (var i = 0; i < productNames.length; i++) {
     new Product(productNames[i], 'img/' + productNames[i] + '.jpg');
   };
 })();
 
+function generateNewTable() {
+  while (totalEl.firstChild) {
+    totalEl.removeChild(totalEl.firstChild);
+  };
+};
 
-var sectEl = document.getElementById('imageList');
-
-function addingList() {
-    // console.log('in adding function');
-    var ulEl = document.createElement('ul');
-    ulEl.textContent = 'User voted like this'
-
-    // liEl = document.createElement('li');
-
-    for (var i = 0; i < productNames.length; i++) {
-      var liEl = document.createElement('li');
-      liEl.textContent = productNames[i] + ' has ' + allProducts[i].tally;
-      ulEl.appendChild(liEl);
-      sectEl.appendChild(ulEl);
-    };
-}
+// function removeBar() {
+//   myBarChart.removeData;
+// };
 
 var productRank = {
   leftObj: null,
   midObj: null,
   rightObj: null,
   totalClicks: 0,
+  // myBarChart: new Chart(barEl).Bar(barData, barOptions),
+
+  // pieData.value.push(this.tally),
 
   leftEl: document.getElementById('img1'),
   midEl: document.getElementById('img2'),
   rightEl: document.getElementById('img3'),
   resultsEl: document.getElementById('results'),
+  imageDisplayEl: document.getElementById('imageDisplay'),
+  clearEl: document.getElementById('clear'),
+  // myBarChartEl: document.getElementById('chartSection'),
 
   getRandomIndex: function() {
     return Math.floor(Math.random() * productNames.length);
   },
+
 
   displayImages: function() {
     productRank.leftObj = allProducts[productRank.getRandomIndex()];
     productRank.midObj = allProducts[productRank.getRandomIndex()];
     productRank.rightObj = allProducts[productRank.getRandomIndex()];
 
+
+
     if (productRank.leftObj === productRank.midObj || productRank.leftObj === productRank.rightObj || productRank.midObj === productRank.rightObj) {
       productRank.displayImages();
     };
 
     productRank.leftEl.src = productRank.leftObj.path;
-    productRank.leftEl.id = productRank.leftObj.path;
-
     productRank.midEl.src = productRank.midObj.path;
-    productRank.midEl.id = productRank.midObj.name;
-
     productRank.rightEl.src = productRank.rightObj.path;
-    productRank.rightEl.id = productRank.rightObj.name;
-
   },
+
+  // function updateBar() {
+  //   myBarChart.destroy();
+  // };
+
+  // updateBar: function() {
+  //   productRank.myBarChart.destroy();
+  // },
 
   showResults: function() {
     if (productRank.totalClicks % 15 === 0) {
-      // addingList();
-      productRank.resultsEl.hidden = false;
-      sectEl.hidden = false;
+      productRank.resultsEl.disabled = false;
+      productRank.resultsEl.className = "yellow";
+      productRank.clearEl.className = "green";
     } else {
-      productRank.resultsEl.hidden = true;
-      sectEl.hidden = true;
-    };
-
-    }
+      productRank.resultsEl.disabled = true;
+      productRank.resultsEl.className = "";
+      productRank.clearEl.className = "";
+      };
+  }
 };
 
-productRank.resultsEl.addEventListener('click', function() {
-  addingList();
-  productRank.showResults();
+function compare(a,b) {
+  if (a.tally > b.tally)
+    return -1;
+  if (a.tally < b.tally)
+    return 1;
+  return 0;
+};
+
+productRank.resultsEl.addEventListener("click", function(event){
+  // generateNewTable();
+  barData.datasets[0].data = [];
+  allProducts.sort(compare);
+  // var headerEl = ["Product", "Tally"];
+  // var tblEl = document.createElement("table");
+  // for (var i = 0; i < headerEl.length; i++){
+  //   var thEl = document.createElement("th");
+  //   thEl.textContent = headerEl[i];
+  //   tblEl.appendChild(thEl);
+  //
+  // }
+  for (var i = 0; i < allProducts.length; i++){
+    // trEl = document.createElement("tr");
+    // var valuesEl = [];
+    // valuesEl.push(productNames[i], allProducts[i].tally + " Votes");
+    barData.datasets[0].data.push(allProducts[i].tally);
+    // for (var j = 0; j < valuesEl.length; j++){
+    //   tdEl = document.createElement("td");
+    //   tdEl.textContent = valuesEl[j];
+    //   trEl.appendChild(tdEl);
+    //   tblEl.appendChild(trEl);
+    // }
+  };
+  // barEl = document.getElementById("myChart").getContext("2d");
+
+  myBarChart = new Chart(barEl).Bar(barData, barOptions);
+
+  // totalEl.appendChild(tblEl);
 });
-
-
 
 productRank.leftEl.addEventListener('click', function() {
   productRank.leftObj.tally += 1;
   productRank.totalClicks += 1;
-  productRank.leftObj.view += 1;
-  console.log(productRank.leftObj.name + ' has ' + productRank.leftObj.tally);
+  console.log('TOTAL number of clicks is ' + productRank.totalClicks);
   productRank.showResults();
   productRank.displayImages();
 });
@@ -104,20 +176,31 @@ productRank.leftEl.addEventListener('click', function() {
 productRank.midEl.addEventListener('click', function() {
   productRank.midObj.tally += 1;
   productRank.totalClicks += 1;
-  productRank.midObj.view += 1;
-  console.log(productRank.midObj.name + ' has ' + productRank.midObj.tally);
+  console.log('TOTAL number of clicks is ' + productRank.totalClicks);
   productRank.showResults();
   productRank.displayImages();
 });
-//
+
 productRank.rightEl.addEventListener('click', function() {
   productRank.rightObj.tally += 1;
   productRank.totalClicks += 1;
-  productRank.rightObj.view += 1;
-  console.log(productRank.rightObj.name + ' has ' + productRank.rightObj.tally);
+  console.log('TOTAL number of clicks is ' + productRank.totalClicks);
   productRank.showResults();
   productRank.displayImages();
+
 });
+
+productRank.imageDisplayEl.addEventListener('click', function() {
+  generateNewTable();
+});
+
+// add new RESET button
+productRank.clearEl.addEventListener('click', function() {
+  barData.datasets[0].data = [];
+  myBarChart.destroy();
+  // productRank.clearEl.className = "";
+})
+
 
 
 productRank.displayImages();
