@@ -74,7 +74,7 @@ var productRank = {
 
   showResults: function() {
     if (productRank.totalClicks % 15 === 0) {
-      addingList();
+      // addingList();
       productRank.resultsEl.hidden = false;
       sectEl.hidden = false;
     } else {
@@ -85,7 +85,10 @@ var productRank = {
     }
 };
 
-
+productRank.resultsEl.addEventListener('click', function() {
+  addingList();
+  productRank.showResults();
+});
 
 
 
