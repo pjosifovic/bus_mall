@@ -43,11 +43,24 @@ header h2 {
   justify-content: flex-end;
 }
 
+.container #results.yellow {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #FFE11A;
+}
+
 .container #totals {
   margin-top: 40px;
   text-align: left;
-
 }
-/*#myChart {
-  width: 30%;
-}*/
+
+.container #clear {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container #clear.green {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #1F8A70;
+}

@@ -1,6 +1,10 @@
 
 var imageSectionEl = document.getElementById('imageDisplay');
+var myBarChartEl = document.getElementById('chartSection');
+var myBarChart;
+var clearEl = document.getElementById('clear');
 var totalEl = document.getElementById('totals');
+var barEl = document.getElementById("myChart").getContext('2d');
 var allProducts = [];
 var productNames = [
     'bag',
@@ -42,7 +46,7 @@ function Product(name, path) {
   this.tally = 0;
   allProducts.push(this);
   barData.labels.push(name);
-  barData.datasets[0].data.push(0);
+  // barData.datasets[0].data.push(0);
   // barData.datasets[0].data.push(0);
 };
 
@@ -53,20 +57,22 @@ function Product(name, path) {
   };
 })();
 
-var barEl = document.getElementById("myChart").getContext("2d");
-new Chart(barEl).Bar(barData, barOptions);
-
 function generateNewTable() {
   while (totalEl.firstChild) {
     totalEl.removeChild(totalEl.firstChild);
   };
 };
 
+// function removeBar() {
+//   myBarChart.removeData;
+// };
+
 var productRank = {
   leftObj: null,
   midObj: null,
   rightObj: null,
   totalClicks: 0,
+  // myBarChart: new Chart(barEl).Bar(barData, barOptions),
 
   // pieData.value.push(this.tally),
 
@@ -75,6 +81,8 @@ var productRank = {
   rightEl: document.getElementById('img3'),
   resultsEl: document.getElementById('results'),
   imageDisplayEl: document.getElementById('imageDisplay'),
+  clearEl: document.getElementById('clear'),
+  // myBarChartEl: document.getElementById('chartSection'),
 
   getRandomIndex: function() {
     return Math.floor(Math.random() * productNames.length);
@@ -97,11 +105,23 @@ var productRank = {
     productRank.rightEl.src = productRank.rightObj.path;
   },
 
+  // function updateBar() {
+  //   myBarChart.destroy();
+  // };
+
+  // updateBar: function() {
+  //   productRank.myBarChart.destroy();
+  // },
+
   showResults: function() {
     if (productRank.totalClicks % 15 === 0) {
       productRank.resultsEl.disabled = false;
+      productRank.resultsEl.className = "yellow";
+      productRank.clearEl.className = "green";
     } else {
       productRank.resultsEl.disabled = true;
+      productRank.resultsEl.className = "";
+      productRank.clearEl.className = "";
       };
   }
 };
@@ -115,27 +135,34 @@ function compare(a,b) {
 };
 
 productRank.resultsEl.addEventListener("click", function(event){
-  generateNewTable();
+  // generateNewTable();
+  barData.datasets[0].data = [];
   allProducts.sort(compare);
-  var headerEl = ["Product", "Tally"];
-  var tblEl = document.createElement("table");
-  for (var i = 0; i < headerEl.length; i++){
-    var thEl = document.createElement("th");
-    thEl.textContent = headerEl[i];
-    tblEl.appendChild(thEl);
-  }
+  // var headerEl = ["Product", "Tally"];
+  // var tblEl = document.createElement("table");
+  // for (var i = 0; i < headerEl.length; i++){
+  //   var thEl = document.createElement("th");
+  //   thEl.textContent = headerEl[i];
+  //   tblEl.appendChild(thEl);
+  //
+  // }
   for (var i = 0; i < allProducts.length; i++){
-    trEl = document.createElement("tr");
-    var valuesEl = [];
-    valuesEl.push(productNames[i], allProducts[i].tally + " Votes");
-    for (var j = 0; j < valuesEl.length; j++){
-      tdEl = document.createElement("td");
-      tdEl.textContent = valuesEl[j];
-      trEl.appendChild(tdEl);
-      tblEl.appendChild(trEl);
-    }
-  }
-  totalEl.appendChild(tblEl);
+    // trEl = document.createElement("tr");
+    // var valuesEl = [];
+    // valuesEl.push(productNames[i], allProducts[i].tally + " Votes");
+    barData.datasets[0].data.push(allProducts[i].tally);
+    // for (var j = 0; j < valuesEl.length; j++){
+    //   tdEl = document.createElement("td");
+    //   tdEl.textContent = valuesEl[j];
+    //   trEl.appendChild(tdEl);
+    //   tblEl.appendChild(trEl);
+    // }
+  };
+  // barEl = document.getElementById("myChart").getContext("2d");
+
+  myBarChart = new Chart(barEl).Bar(barData, barOptions);
+
+  // totalEl.appendChild(tblEl);
 });
 
 productRank.leftEl.addEventListener('click', function() {
@@ -166,5 +193,14 @@ productRank.rightEl.addEventListener('click', function() {
 productRank.imageDisplayEl.addEventListener('click', function() {
   generateNewTable();
 });
+
+// add new RESET button
+productRank.clearEl.addEventListener('click', function() {
+  barData.datasets[0].data = [];
+  myBarChart.destroy();
+  // productRank.clearEl.className = "";
+})
+
+
 
 productRank.displayImages();
