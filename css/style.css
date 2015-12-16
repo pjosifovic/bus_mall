@@ -3,9 +3,9 @@ body {
 }
 
 /*easier styling*/
-body * {
+/*body * {
   border: 1px solid black;
-}
+}*/
 
 body {
   margin: 0 auto;
@@ -48,3 +48,6 @@ header h2 {
   text-align: left;
 
 }
+/*#myChart {
+  width: 30%;
+}*/

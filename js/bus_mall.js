@@ -1,7 +1,6 @@
 
 var imageSectionEl = document.getElementById('imageDisplay');
 var totalEl = document.getElementById('totals');
-
 var allProducts = [];
 var productNames = [
     'bag',
@@ -20,18 +19,42 @@ var productNames = [
     'wine_glass'
 ];
 
+var barData = {
+    labels: [],
+    datasets: [
+        {
+            label: "My First Chart",
+            fillColor: "#1F8A70",
+            highlightFill: "#FFE11A",
+            data: []
+        }]
+};
+
+var barOptions = {
+     barShowStroke: false,
+     scaleShowGridLines: false,
+     barValueSpacing : 1,
+};
+
 function Product(name, path) {
   this.name = name;
   this.path = path;
   this.tally = 0;
   allProducts.push(this);
+  barData.labels.push(name);
+  barData.datasets[0].data.push(0);
+  // barData.datasets[0].data.push(0);
 };
+
 
 (function buildAlbum() {
   for (var i = 0; i < productNames.length; i++) {
     new Product(productNames[i], 'img/' + productNames[i] + '.jpg');
   };
 })();
+
+var barEl = document.getElementById("myChart").getContext("2d");
+new Chart(barEl).Bar(barData, barOptions);
 
 function generateNewTable() {
   while (totalEl.firstChild) {
@@ -44,6 +67,8 @@ var productRank = {
   midObj: null,
   rightObj: null,
   totalClicks: 0,
+
+  // pieData.value.push(this.tally),
 
   leftEl: document.getElementById('img1'),
   midEl: document.getElementById('img2'),
@@ -60,6 +85,8 @@ var productRank = {
     productRank.leftObj = allProducts[productRank.getRandomIndex()];
     productRank.midObj = allProducts[productRank.getRandomIndex()];
     productRank.rightObj = allProducts[productRank.getRandomIndex()];
+
+
 
     if (productRank.leftObj === productRank.midObj || productRank.leftObj === productRank.rightObj || productRank.midObj === productRank.rightObj) {
       productRank.displayImages();
