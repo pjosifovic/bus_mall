@@ -54,7 +54,9 @@ header h2 {
   text-align: left;
 }
 
-.container #clear {
+/*usef for CLEAR button*/
+
+/*.container #clear {
   display: flex;
   justify-content: flex-end;
 }
@@ -63,4 +65,4 @@ header h2 {
   display: flex;
   justify-content: flex-end;
   background-color: #1F8A70;
-}
+}*/
