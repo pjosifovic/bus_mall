@@ -1,11 +1,11 @@
 
-var imageSectionEl = document.getElementById('imageDisplay');
-var myBarChartEl = document.getElementById('chartSection');
-var myBarChart;
 var clearEl = document.getElementById('clear');
 var totalEl = document.getElementById('totals');
 var barEl = document.getElementById("myChart").getContext('2d');
+var myBarChart;
 var allProducts = [];
+
+
 var productNames = [
     'bag',
     'banana',
@@ -40,16 +40,15 @@ var barOptions = {
      barValueSpacing : 1,
 };
 
+
 function Product(name, path) {
   this.name = name;
   this.path = path;
   this.tally = 0;
   allProducts.push(this);
   barData.labels.push(name);
-  // barData.datasets[0].data.push(0);
-  // barData.datasets[0].data.push(0);
-};
 
+};
 
 (function buildAlbum() {
   for (var i = 0; i < productNames.length; i++) {
@@ -63,18 +62,13 @@ function generateNewTable() {
   };
 };
 
-// function removeBar() {
-//   myBarChart.removeData;
-// };
-
 var productRank = {
   leftObj: null,
   midObj: null,
   rightObj: null,
   totalClicks: 0,
-  // myBarChart: new Chart(barEl).Bar(barData, barOptions),
-
-  // pieData.value.push(this.tally),
+  currentTally: [],
+  setJson: [],
 
   leftEl: document.getElementById('img1'),
   midEl: document.getElementById('img2'),
@@ -82,7 +76,6 @@ var productRank = {
   resultsEl: document.getElementById('results'),
   imageDisplayEl: document.getElementById('imageDisplay'),
   clearEl: document.getElementById('clear'),
-  // myBarChartEl: document.getElementById('chartSection'),
 
   getRandomIndex: function() {
     return Math.floor(Math.random() * productNames.length);
@@ -94,8 +87,6 @@ var productRank = {
     productRank.midObj = allProducts[productRank.getRandomIndex()];
     productRank.rightObj = allProducts[productRank.getRandomIndex()];
 
-
-
     if (productRank.leftObj === productRank.midObj || productRank.leftObj === productRank.rightObj || productRank.midObj === productRank.rightObj) {
       productRank.displayImages();
     };
@@ -104,14 +95,6 @@ var productRank = {
     productRank.midEl.src = productRank.midObj.path;
     productRank.rightEl.src = productRank.rightObj.path;
   },
-
-  // function updateBar() {
-  //   myBarChart.destroy();
-  // };
-
-  // updateBar: function() {
-  //   productRank.myBarChart.destroy();
-  // },
 
   showResults: function() {
     if (productRank.totalClicks % 15 === 0) {
@@ -135,34 +118,17 @@ function compare(a,b) {
 };
 
 productRank.resultsEl.addEventListener("click", function(event){
-  // generateNewTable();
   barData.datasets[0].data = [];
   allProducts.sort(compare);
-  // var headerEl = ["Product", "Tally"];
-  // var tblEl = document.createElement("table");
-  // for (var i = 0; i < headerEl.length; i++){
-  //   var thEl = document.createElement("th");
-  //   thEl.textContent = headerEl[i];
-  //   tblEl.appendChild(thEl);
-  //
-  // }
+  productRank.currentTally = [];
   for (var i = 0; i < allProducts.length; i++){
-    // trEl = document.createElement("tr");
-    // var valuesEl = [];
-    // valuesEl.push(productNames[i], allProducts[i].tally + " Votes");
     barData.datasets[0].data.push(allProducts[i].tally);
-    // for (var j = 0; j < valuesEl.length; j++){
-    //   tdEl = document.createElement("td");
-    //   tdEl.textContent = valuesEl[j];
-    //   trEl.appendChild(tdEl);
-    //   tblEl.appendChild(trEl);
-    // }
+    productRank.currentTally.push(allProducts[i].tally);
   };
-  // barEl = document.getElementById("myChart").getContext("2d");
+    productRank.setJson = JSON.stringify(productRank.currentTally);
+    localStorage.setItem('tallyVotes', productRank.setJson);
+    myBarChart = new Chart(barEl).Bar(barData, barOptions);
 
-  myBarChart = new Chart(barEl).Bar(barData, barOptions);
-
-  // totalEl.appendChild(tblEl);
 });
 
 productRank.leftEl.addEventListener('click', function() {
@@ -194,13 +160,16 @@ productRank.imageDisplayEl.addEventListener('click', function() {
   generateNewTable();
 });
 
-// add new RESET button
 productRank.clearEl.addEventListener('click', function() {
   barData.datasets[0].data = [];
+  productRank.currentTally = [];
   myBarChart.destroy();
-  // productRank.clearEl.className = "";
 })
 
-
-
 productRank.displayImages();
+
+
+// imageSectionEl.addEventListener('click', function(event) {}
+// if (event.target.id === productRank.leftObj.name || event.target.id === productRank.midObj.name || event.target.id === productRank.rightObj.name) {
+//
+// }
