@@ -1,11 +1,8 @@
-
 var clearEl = document.getElementById('clear');
 var totalEl = document.getElementById('totals');
 var barEl = document.getElementById("myChart").getContext('2d');
 var myBarChart;
 var allProducts = [];
-
-
 var productNames = [
     'bag',
     'banana',
@@ -40,15 +37,14 @@ var barOptions = {
      barValueSpacing : 1,
 };
 
-
 function Product(name, path) {
   this.name = name;
   this.path = path;
   this.tally = 0;
   allProducts.push(this);
   barData.labels.push(name);
-
 };
+
 
 (function buildAlbum() {
   for (var i = 0; i < productNames.length; i++) {
@@ -56,9 +52,12 @@ function Product(name, path) {
   };
 })();
 
-function generateNewTable() {
-  while (totalEl.firstChild) {
-    totalEl.removeChild(totalEl.firstChild);
+
+function generateBarData() {
+  if (productRank.totalClicks % 15 === 0) {
+  for (var i = 0; i < allProducts.length; i++){
+  barData.datasets[0].data.push(allProducts[i].tally);
+  };
   };
 };
 
@@ -67,15 +66,15 @@ var productRank = {
   midObj: null,
   rightObj: null,
   totalClicks: 0,
-  currentTally: [],
-  setJson: [],
 
   leftEl: document.getElementById('img1'),
   midEl: document.getElementById('img2'),
   rightEl: document.getElementById('img3'),
   resultsEl: document.getElementById('results'),
-  imageDisplayEl: document.getElementById('imageDisplay'),
   clearEl: document.getElementById('clear'),
+  imageDisplayEl: document.getElementById('imageDisplay'),
+
+  // myBarChartEl: document.getElementById('chartSection'),
 
   getRandomIndex: function() {
     return Math.floor(Math.random() * productNames.length);
@@ -100,11 +99,9 @@ var productRank = {
     if (productRank.totalClicks % 15 === 0) {
       productRank.resultsEl.disabled = false;
       productRank.resultsEl.className = "yellow";
-      productRank.clearEl.className = "green";
     } else {
       productRank.resultsEl.disabled = true;
       productRank.resultsEl.className = "";
-      productRank.clearEl.className = "";
       };
   }
 };
@@ -120,15 +117,8 @@ function compare(a,b) {
 productRank.resultsEl.addEventListener("click", function(event){
   barData.datasets[0].data = [];
   allProducts.sort(compare);
-  productRank.currentTally = [];
-  for (var i = 0; i < allProducts.length; i++){
-    barData.datasets[0].data.push(allProducts[i].tally);
-    productRank.currentTally.push(allProducts[i].tally);
-  };
-    productRank.setJson = JSON.stringify(productRank.currentTally);
-    localStorage.setItem('tallyVotes', productRank.setJson);
-    myBarChart = new Chart(barEl).Bar(barData, barOptions);
-
+  generateBarData();
+  myBarChart = new Chart(barEl).Bar(barData, barOptions);
 });
 
 productRank.leftEl.addEventListener('click', function() {
@@ -153,23 +143,11 @@ productRank.rightEl.addEventListener('click', function() {
   console.log('TOTAL number of clicks is ' + productRank.totalClicks);
   productRank.showResults();
   productRank.displayImages();
-
 });
 
 productRank.imageDisplayEl.addEventListener('click', function() {
-  generateNewTable();
+    if (myBarChart !== undefined)
+    myBarChart.destroy();
 });
 
-productRank.clearEl.addEventListener('click', function() {
-  barData.datasets[0].data = [];
-  productRank.currentTally = [];
-  myBarChart.destroy();
-})
-
 productRank.displayImages();
-
-
-// imageSectionEl.addEventListener('click', function(event) {}
-// if (event.target.id === productRank.leftObj.name || event.target.id === productRank.midObj.name || event.target.id === productRank.rightObj.name) {
-//
-// }
