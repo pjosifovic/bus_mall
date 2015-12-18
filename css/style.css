@@ -38,31 +38,16 @@ header h2 {
   height: 100%;
 }
 
-.container #results {
-  display: flex;
-  justify-content: flex-end;
-}
 
-.container #results.yellow {
+
+
+/*.container #results.yellow {
   display: flex;
   justify-content: flex-end;
   background-color: #FFE11A;
-}
+} */
 
 .container #totals {
   margin-top: 40px;
   text-align: left;
 }
-
-/*usef for CLEAR button*/
-
-/*.container #clear {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.container #clear.green {
-  display: flex;
-  justify-content: flex-end;
-  background-color: #1F8A70;
-}*/
