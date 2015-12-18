@@ -4,7 +4,7 @@ README.md
 .gitignore
 css/**
 img/**
-js/chartjs
+js/chart.js
 .DS_Store
 .eslintrc
 .eslintignore
